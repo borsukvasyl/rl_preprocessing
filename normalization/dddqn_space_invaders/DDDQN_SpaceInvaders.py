@@ -11,7 +11,7 @@ from deeprl.callbacks import Tensorboard, Saver
 from deeprl.trainers.qlearning import DoubleDQNTrainer, DQNConfig
 from deeprl.utils import record_video
 
-from models import SimpleDQNetwork
+from models import SimpleConvDQNetwork
 from environments import MinMaxNormalizationWrapper
 from train import train_model
 
@@ -19,12 +19,12 @@ from train import train_model
 def main(args):
     n_episodes = 300
 
-    env = gym.make("CartPole-v0")
+    env = gym.make("SpaceInvaders-v0")
     if args.use_norm:
         env = MinMaxNormalizationWrapper(env)
 
     a_size = env.action_space.n
-    s_size = env.observation_space.shape[0]
+    s_size = env.observation_space.shape
     print("Action space size: {}".format(a_size))
     print("State space size: {}".format(s_size))
 
@@ -35,7 +35,7 @@ def main(args):
     config.gpu_options.per_process_gpu_memory_fraction = 0.4
     sess = tf.Session(config=config)
 
-    model = SimpleDQNetwork("main", sess, s_size=s_size, a_size=a_size)
+    model = SimpleConvDQNetwork("main", sess, s_size=s_size, a_size=a_size)
     agent = QAgent(model)
 
     config = DQNConfig()
