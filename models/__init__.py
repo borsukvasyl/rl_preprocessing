@@ -4,3 +4,4 @@ from __future__ import print_function
 
 from .SimpleDQNetwork import SimpleDQNetwork
 from .SimpleConvDQNetwork import SimpleConvDQNetwork
+from .SimpleConvLstmDQNetwork import SimpleConvLstmDQNetwork
