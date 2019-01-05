@@ -22,13 +22,12 @@ class SimpleConvLstmDQNetwork(BaseDuelingDQN):
         self.lstm_state = tf.contrib.rnn.LSTMStateTuple(self.lstm_state0, self.lstm_state1)
         self.lstm_cell = tf.contrib.rnn.BasicLSTMCell(256, state_is_tuple=True)
 
-        conv1 = tf.layers.conv2d(inputs=self.states, filters=8, kernel_size=[3, 3], activation=tf.nn.relu)
-        pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[3, 3], strides=2)
-        conv2 = tf.layers.conv2d(inputs=pool1, filters=16, kernel_size=[3, 3], activation=tf.nn.relu)
-        pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[3, 3], strides=2)
-        conv3 = tf.layers.conv2d(inputs=pool2, filters=24, kernel_size=[3, 3], activation=tf.nn.relu)
-        pool3 = tf.layers.max_pooling2d(inputs=conv3, pool_size=[3, 3], strides=2)
-        flat = tf.layers.flatten(pool3)
+        conv1 = tf.layers.conv2d(inputs=self.states, filters=32, kernel_size=[6, 6], strides=3, activation=tf.nn.relu)
+        conv2 = tf.layers.conv2d(inputs=conv1, filters=64, kernel_size=[4, 4], strides=2, activation=tf.nn.relu)
+        conv3 = tf.layers.conv2d(inputs=conv2, filters=96, kernel_size=[4, 4], strides=2, activation=tf.nn.relu)
+        conv4 = tf.layers.conv2d(inputs=conv3, filters=128, kernel_size=[4, 4], strides=2, activation=tf.nn.relu)
+        flat = tf.layers.flatten(conv4)
+        print("Flatten size:", flat.get_shape())
 
         dense1 = tf.layers.dense(inputs=flat, units=256, activation=tf.nn.relu)
 
