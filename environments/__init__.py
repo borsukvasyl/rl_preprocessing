@@ -3,3 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 from .MinMaxNormalizationWrapper import MinMaxNormalizationWrapper
+from .GrayScaleWrapper import GreyScaleWrapper
+from .AtariNormalizationWrapper import AtariNormalizationWrapper
+from .StackFramesWrapper import StackFramesWrapper
