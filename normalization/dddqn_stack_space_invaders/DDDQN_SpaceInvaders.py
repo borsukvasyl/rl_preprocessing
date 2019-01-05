@@ -26,7 +26,7 @@ def main(args):
     env = StackFramesWrapper(env)
 
     a_size = env.action_space.n
-    s_size = env.observation_space.shape
+    s_size = (84, 110, 4) if args.use_norm else (84, 110, 12)
     print("Action space size: {}".format(a_size))
     print("State space size: {}".format(s_size))
 

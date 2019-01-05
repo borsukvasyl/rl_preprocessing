@@ -16,16 +16,14 @@ class SimpleConvDQNetwork(BaseDuelingDQN):
         self.q_target = tf.placeholder(shape=[None], dtype=tf.float32)
         self.actions = tf.placeholder(shape=[None, ], dtype=tf.uint8)
 
-        conv1 = tf.layers.conv2d(inputs=self.states, filters=8, kernel_size=[3, 3], activation=tf.nn.relu)
-        pool1 = tf.layers.max_pooling2d(inputs=conv1, pool_size=[3, 3], strides=2)
-        conv2 = tf.layers.conv2d(inputs=pool1, filters=16, kernel_size=[3, 3], activation=tf.nn.relu)
-        pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[3, 3], strides=2)
-        conv3 = tf.layers.conv2d(inputs=pool2, filters=24, kernel_size=[3, 3], activation=tf.nn.relu)
-        pool3 = tf.layers.max_pooling2d(inputs=conv3, pool_size=[3, 3], strides=2)
-        flat = tf.layers.flatten(pool3)
+        conv1 = tf.layers.conv2d(inputs=self.states, filters=32, kernel_size=[6, 6], strides=3, activation=tf.nn.relu)
+        conv2 = tf.layers.conv2d(inputs=conv1, filters=64, kernel_size=[4, 4], strides=2, activation=tf.nn.relu)
+        conv3 = tf.layers.conv2d(inputs=conv2, filters=96, kernel_size=[4, 4], strides=2, activation=tf.nn.relu)
+        flat = tf.layers.flatten(conv3)
+        print("Flatten size:", flat.get_shape())
 
-        dense1 = tf.layers.dense(inputs=flat, units=48, activation=tf.nn.relu)
-        dense2 = tf.layers.dense(inputs=dense1, units=32, activation=tf.nn.relu)
+        dense1 = tf.layers.dense(inputs=flat, units=512, activation=tf.nn.relu)
+        dense2 = tf.layers.dense(inputs=dense1, units=256, activation=tf.nn.relu)
 
         self.value = tf.layers.dense(inputs=dense2, units=1)
         self.advantage = tf.layers.dense(inputs=dense2, units=self.a_size)
