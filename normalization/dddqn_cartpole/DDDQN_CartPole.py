@@ -39,6 +39,7 @@ def main(args):
     agent = QAgent(model)
 
     config = DQNConfig()
+    config.train_freq = 1
     trainer = DoubleDQNTrainer(config, agent, env)
     trainer.callbacks.append(Tensorboard(sess, ["r_total"], log_dir=checkpoint_path))
     trainer.callbacks.append(Saver(model, step=20, filename=checkpoint_path + "/model"))
